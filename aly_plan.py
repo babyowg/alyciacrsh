@@ -2,15 +2,19 @@ import os
 import sys
 import json
 import datetime
+import requests
 from pathlib import Path
 from dotenv import load_dotenv
-import anthropic
 
 load_dotenv()
 
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 OUTPUT_BASE = Path("outputs/content_packs")
 STYLE_GUIDE = Path("aly_style_guide.md")
+
+ANTHROPIC_API_URL = "https://api.anthropic.com/v1/messages"
+ANTHROPIC_VERSION = "2023-06-01"
+MODEL = "claude-opus-4-8"
 
 
 def load_style_guide() -> str:
@@ -19,13 +23,13 @@ def load_style_guide() -> str:
     return ""
 
 
-def generate_plan(topic: str) -> dict:
+def generate_plan(topic):
     if not ANTHROPIC_API_KEY:
         raise ValueError("ANTHROPIC_API_KEY manquante dans .env")
 
     style_guide = load_style_guide()
 
-    system_prompt = f"""Tu es le directeur créatif d'Aly, une influenceuse IA francophone spécialisée dans la niche couple & relations amoureuses.
+    system_prompt = """Tu es le directeur créatif d'Aly, une influenceuse IA francophone spécialisée dans la niche couple & relations amoureuses.
 
 Voici le guide de style d'Aly :
 
@@ -49,32 +53,46 @@ Réponds UNIQUEMENT avec un objet JSON valide (pas de markdown, pas de texte aut
       "image_prompt": "Prompt en anglais pour générer l'image AlexyaAI, inclure 'Aly' si Aly est visible"
     }}
   ]
-}}"""
+}}""".format(style_guide=style_guide)
 
-    client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
+    headers = {
+        "x-api-key": ANTHROPIC_API_KEY,
+        "anthropic-version": ANTHROPIC_VERSION,
+        "content-type": "application/json",
+    }
 
-    print(f"Génération du plan pour : {topic!r}")
-    print("Appel Claude claude-opus-4-8...")
-
-    message = client.messages.create(
-        model="claude-opus-4-8",
-        max_tokens=4096,
-        thinking={"type": "adaptive"},
-        system=system_prompt,
-        messages=[
+    payload = {
+        "model": MODEL,
+        "max_tokens": 4096,
+        "system": system_prompt,
+        "messages": [
             {
                 "role": "user",
-                "content": f"Crée un plan vidéo complet pour le sujet suivant : {topic}",
+                "content": "Crée un plan vidéo complet pour le sujet suivant : " + topic,
             }
         ],
-    )
+    }
 
-    raw = message.content[-1].text.strip()
+    print("Génération du plan pour : " + repr(topic))
+    print("Appel Claude " + MODEL + "...")
+
+    resp = requests.post(ANTHROPIC_API_URL, headers=headers, json=payload)
+
+    if resp.status_code != 200:
+        raise RuntimeError("Erreur API Anthropic (" + str(resp.status_code) + ") : " + resp.text)
+
+    data = resp.json()
+    content_blocks = data.get("content", [])
+    text_blocks = [b["text"] for b in content_blocks if b.get("type") == "text"]
+    if not text_blocks:
+        raise RuntimeError("Aucun bloc texte dans la réponse : " + str(data))
+
+    raw = text_blocks[-1].strip()
 
     try:
         plan = json.loads(raw)
     except json.JSONDecodeError as e:
-        raise RuntimeError(f"Réponse Claude invalide (pas du JSON) : {e}\n\nRéponse brute :\n{raw}")
+        raise RuntimeError("Réponse Claude invalide (pas du JSON) : " + str(e) + "\n\nRéponse brute :\n" + raw)
 
     return plan
 
