@@ -25,9 +25,15 @@ import datetime
 from pathlib import Path
 from typing import Optional, List, Tuple
 
+# Always resolve imports relative to this file so the script works when
+# called from any working directory (e.g. from a Claude Code slash command).
+_HERE = Path(__file__).resolve().parent
+if str(_HERE) not in sys.path:
+    sys.path.insert(0, str(_HERE))
+
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(_HERE / ".env")
 
 # Reuse appearance + prompt logic from aly_plan
 from aly_plan import (
@@ -40,7 +46,7 @@ from aly_plan import (
 # Reuse image generation from aly_generate_images
 from aly_generate_images import generate_all
 
-OUTPUT_BASE = Path("outputs")
+OUTPUT_BASE = _HERE / "outputs"
 
 # Scene roles by position (1-indexed)
 SCENE_ROLES = {
@@ -161,6 +167,35 @@ def _build_image_prompt(n: int, emotion_raw: str, plan_raw: str, appearance_frag
         base = f"Aly talking to camera with {emotion_en}, {plan_en}, cozy bedroom warm light, green eyes, freckles, ultra realistic, amateur iPhone photo quality, 9:16"
 
     return base + ", " + appearance_frag + " " + PROMPT_SUFFIX
+
+
+def infer_topic_from_script(script_text: str) -> str:
+    """
+    Extract a topic/title from the script text.
+    Tries these in order:
+      1. A line starting with "Titre :" or "Sujet :"
+      2. The first non-empty quoted text (first Texte field)
+      3. The first non-empty line before SCÈNE 1
+    Falls back to a timestamp slug if nothing is found.
+    """
+    # 1. Explicit title line
+    m = re.search(r"(?:Titre|Sujet)\s*:\s*(.+)", script_text, re.IGNORECASE)
+    if m:
+        return m.group(1).strip().strip('"').strip()
+
+    # 2. First Texte field — use up to 50 chars as slug
+    m = re.search(r"Texte\s*:\s*[\"«]?\s*(.+?)[\".»]", script_text, re.IGNORECASE)
+    if m:
+        raw = m.group(1).strip()
+        return raw[:50].rstrip(".,…")
+
+    # 3. First non-empty line before any SCÈNE marker
+    for line in script_text.splitlines():
+        line = line.strip()
+        if line and not re.match(r"SC[ÈE]NE\s+\d+", line, re.IGNORECASE):
+            return line[:50]
+
+    return "pack_" + datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 
 
 def parse_script(script_text: str) -> List[dict]:
@@ -368,15 +403,17 @@ def generate_pack_from_script(
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
     if len(sys.argv) < 2 or sys.argv[1] in ("-h", "--help"):
-        print("Usage : python3 aly_pack_from_script.py <script.txt> [topic] [--no-images]")
+        print("Usage : python3 aly_pack_from_script.py <script.txt> [topic] [--no-images] [--infer-topic]")
         print()
         print("Arguments :")
-        print("  script.txt   Fichier texte contenant le script en format Aly")
-        print("  topic        Titre / sujet de la vidéo (optionnel)")
-        print("  --no-images  Créer le pack sans lancer la génération d'images")
+        print("  script.txt     Fichier texte contenant le script en format Aly")
+        print("  topic          Titre / sujet de la vidéo (optionnel)")
+        print("  --no-images    Créer le pack sans lancer la génération d'images")
+        print("  --infer-topic  Déduire automatiquement le titre depuis le script")
         print()
-        print("Exemple :")
+        print("Exemples :")
         print('  python3 aly_pack_from_script.py mon_script.txt "Le jeu de l\'indifférence"')
+        print('  python3 aly_pack_from_script.py /tmp/aly_script_input.txt --infer-topic')
         sys.exit(0 if len(sys.argv) > 1 else 1)
 
     script_file = Path(sys.argv[1])
@@ -386,12 +423,20 @@ if __name__ == "__main__":
 
     topic = None
     generate_images = True
+    infer_topic = False
 
     for arg in sys.argv[2:]:
         if arg == "--no-images":
             generate_images = False
+        elif arg == "--infer-topic":
+            infer_topic = True
         elif not arg.startswith("--"):
             topic = arg
 
     script_text = script_file.read_text(encoding="utf-8")
+
+    if infer_topic and not topic:
+        topic = infer_topic_from_script(script_text)
+        print("Titre inféré : " + topic)
+
     generate_pack_from_script(script_text, topic=topic, generate_images=generate_images)
