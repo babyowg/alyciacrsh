@@ -17,6 +17,18 @@ ALY_IMAGE = ALY_REFS_DIR / "mok-up Aly.png"
 POLL_INTERVAL = 5
 POLL_TIMEOUT = 600
 
+PROMPT_SUFFIX = (
+    "Clean final photo export. No camera app interface. No iPhone UI. No shutter button. "
+    "No screen overlay. No recording indicators. No app icons. No status bar. "
+    "No notifications. No screenshot appearance. Professional final image only."
+)
+
+NEGATIVE_PROMPT = (
+    "camera app UI, iPhone camera interface, shutter button, screen overlay, phone screenshot, "
+    "app interface, icons, status bar, notification bar, recording overlay, text, watermark, "
+    "logo, low quality, blurry, cartoon, anime, CGI, 3D render"
+)
+
 
 def api_headers() -> dict:
     return {
@@ -63,8 +75,11 @@ def create_image_job(prompt: str) -> dict:
     if not API_KEY:
         raise ValueError("ALEXYA_API_KEY manquante dans .env")
 
+    full_prompt = prompt if prompt.endswith(PROMPT_SUFFIX) else prompt + " " + PROMPT_SUFFIX
+
     payload = {
-        "prompt": prompt,
+        "prompt": full_prompt,
+        "negative_prompt": NEGATIVE_PROMPT,
         "mode": "high_quality",
         "aspect_ratio": "9:16",
     }

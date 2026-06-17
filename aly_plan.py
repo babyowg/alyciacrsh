@@ -9,6 +9,12 @@ load_dotenv()
 
 OUTPUT_BASE = Path("outputs/content_packs")
 
+PROMPT_SUFFIX = (
+    "Clean final photo export. No camera app interface. No iPhone UI. No shutter button. "
+    "No screen overlay. No recording indicators. No app icons. No status bar. "
+    "No notifications. No screenshot appearance. Professional final image only."
+)
+
 SCENE_TEMPLATES = [
     {
         "scene_number": 1,
@@ -113,7 +119,7 @@ def build_scenes(topic):
             "role": t["role"],
             "description": t["description_template"].format(topic=topic),
             "voiceover": t["voiceover_template"].format(topic=topic),
-            "image_prompt": t["image_prompt_template"],
+            "image_prompt": t["image_prompt_template"] + " " + PROMPT_SUFFIX,
         }
         scenes.append(scene)
     return scenes

@@ -75,3 +75,24 @@ Aly [action/situation], [lieu/décor], [lumière], [détail tenue], ultra realis
 - Jamais de langage vulgaire excessif
 - Pas de politique ni de religion
 - Pas de marques concurrentes visibles
+
+---
+
+## Règle absolue — Aucune interface smartphone dans les images
+
+**Toutes les images générées doivent être des photos finales propres, sans aucun élément d'interface.**
+
+Sont strictement interdits dans tout rendu :
+- Interface de l'app caméra (iPhone ou autre)
+- Bouton déclencheur / shutter button
+- Overlays d'enregistrement ou indicateurs REC
+- Barre de statut, barre de notification
+- Icônes, menus, éléments d'app
+- Captures d'écran ou apparence screenshot
+- Filigranes, logos, texte superposé
+
+**Suffixe positif obligatoire** (ajouté automatiquement à chaque prompt image) :
+> Clean final photo export. No camera app interface. No iPhone UI. No shutter button. No screen overlay. No recording indicators. No app icons. No status bar. No notifications. No screenshot appearance. Professional final image only.
+
+**Prompt négatif obligatoire** (envoyé à chaque requête AlexyaAI) :
+> camera app UI, iPhone camera interface, shutter button, screen overlay, phone screenshot, app interface, icons, status bar, notification bar, recording overlay, text, watermark, logo, low quality, blurry, cartoon, anime, CGI, 3D render
