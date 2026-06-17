@@ -77,10 +77,10 @@ def create_image_job(prompt: str) -> dict:
         raise ValueError("ALEXYA_API_KEY manquante dans .env")
 
     full_prompt = prompt if prompt.endswith(PROMPT_SUFFIX) else prompt + " " + PROMPT_SUFFIX
+    full_prompt = full_prompt + " Negative prompt: " + NEGATIVE_PROMPT
 
     payload = {
         "prompt": full_prompt,
-        "negative_prompt": NEGATIVE_PROMPT,
         "mode": "high_quality",
         "aspect_ratio": "9:16",
     }
