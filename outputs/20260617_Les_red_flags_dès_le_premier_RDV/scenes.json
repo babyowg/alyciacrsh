@@ -1,0 +1,104 @@
+{
+  "title": "[ TITRE À COMPLÉTER ] — Les red flags dès le premier RDV",
+  "topic": "Les red flags dès le premier RDV",
+  "duration_seconds": 61,
+  "appearance": {
+    "outfit": "deep navy slip-style top with wide spaghetti straps and low square neckline",
+    "hairstyle": "curly deep red hair pulled into a low messy ponytail with loose strands",
+    "makeup": "glowy skin, soft terracotta lip, subtle bronzer on cheeks",
+    "glasses": "large glossy black rectangular frames",
+    "microphone": "RØDE NT-USB Mini clipped to boom arm, barely visible at frame edge"
+  },
+  "scenes": [
+    {
+      "scene_number": 1,
+      "type": "talking-head",
+      "duration_seconds": 5,
+      "role": "hook",
+      "description": "Aly face caméra, expression choquée ou intriguée, accroche immédiate sur le sujet : Les red flags dès le premier RDV",
+      "voiceover": "[ HOOK — question choc ou révélation ] ex: « Les red flags dès le premier RDV — et personne ne t'en parle. »",
+      "image_prompt": "Aly talking directly to camera with shocked wide-eyed expression, cozy bedroom warm light, freckles, green eyes, ultra realistic, amateur iPhone photo quality, 9:16, deep navy slip-style top with wide spaghetti straps and low square neckline, curly deep red hair pulled into a low messy ponytail with loose strands, glowy skin, soft terracotta lip, subtle bronzer on cheeks, large glossy black rectangular frames, RØDE NT-USB Mini clipped to boom arm, barely visible at frame edge Clean final photo export. No camera app interface. No iPhone UI. No shutter button. No screen overlay. No recording indicators. No app icons. No status bar. No notifications. No screenshot appearance. Professional final image only."
+    },
+    {
+      "scene_number": 2,
+      "type": "talking-head",
+      "duration_seconds": 7,
+      "role": "setup",
+      "description": "Aly introduit le contexte, pose la situation liée à : Les red flags dès le premier RDV",
+      "voiceover": "[ SETUP — contexte ] ex: « Laisse-moi t'expliquer ce qui m'est arrivé / ce que j'ai observé... »",
+      "image_prompt": "Aly talking to camera with serious focused expression, cozy bedroom natural daylight, green eyes, ultra realistic, 9:16, deep navy slip-style top with wide spaghetti straps and low square neckline, curly deep red hair pulled into a low messy ponytail with loose strands, glowy skin, soft terracotta lip, subtle bronzer on cheeks, large glossy black rectangular frames, RØDE NT-USB Mini clipped to boom arm, barely visible at frame edge Clean final photo export. No camera app interface. No iPhone UI. No shutter button. No screen overlay. No recording indicators. No app icons. No status bar. No notifications. No screenshot appearance. Professional final image only."
+    },
+    {
+      "scene_number": 3,
+      "type": "b-roll",
+      "duration_seconds": 6,
+      "role": "development",
+      "description": "B-roll illustrant la situation ou l'émotion associée à : Les red flags dès le premier RDV",
+      "voiceover": "[ VOIX OFF — narration ] ex: « Au début, tout semblait normal... »",
+      "image_prompt": "close-up hands holding smartphone with chat conversation visible, cozy bedroom background warm bokeh, natural light, ultra realistic, amateur iPhone quality, 9:16 Clean final photo export. No camera app interface. No iPhone UI. No shutter button. No screen overlay. No recording indicators. No app icons. No status bar. No notifications. No screenshot appearance. Professional final image only."
+    },
+    {
+      "scene_number": 4,
+      "type": "reaction",
+      "duration_seconds": 5,
+      "role": "development",
+      "description": "Gros plan réaction d'Aly face à une révélation ou situation liée à : Les red flags dès le premier RDV",
+      "voiceover": "[ RÉACTION ] ex: « Et là... j'ai compris. »",
+      "image_prompt": "Aly close-up face reaction shot, concerned or disappointed expression, green eyes slightly narrowed, freckles, soft warm light, ultra realistic, amateur iPhone quality, 9:16, deep navy slip-style top with wide spaghetti straps and low square neckline, curly deep red hair pulled into a low messy ponytail with loose strands, glowy skin, soft terracotta lip, subtle bronzer on cheeks, large glossy black rectangular frames, RØDE NT-USB Mini clipped to boom arm, barely visible at frame edge Clean final photo export. No camera app interface. No iPhone UI. No shutter button. No screen overlay. No recording indicators. No app icons. No status bar. No notifications. No screenshot appearance. Professional final image only."
+    },
+    {
+      "scene_number": 5,
+      "type": "talking-head",
+      "duration_seconds": 7,
+      "role": "development",
+      "description": "Aly développe le premier point clé sur : Les red flags dès le premier RDV",
+      "voiceover": "[ POINT 1 ] ex: « La première chose à savoir, c'est que... »",
+      "image_prompt": "Aly talking to camera with neutral confident expression, gesturing with hand, cozy bedroom warm light, green eyes, ultra realistic, 9:16, deep navy slip-style top with wide spaghetti straps and low square neckline, curly deep red hair pulled into a low messy ponytail with loose strands, glowy skin, soft terracotta lip, subtle bronzer on cheeks, large glossy black rectangular frames, RØDE NT-USB Mini clipped to boom arm, barely visible at frame edge Clean final photo export. No camera app interface. No iPhone UI. No shutter button. No screen overlay. No recording indicators. No app icons. No status bar. No notifications. No screenshot appearance. Professional final image only."
+    },
+    {
+      "scene_number": 6,
+      "type": "b-roll",
+      "duration_seconds": 6,
+      "role": "development",
+      "description": "B-roll illustrant le deuxième aspect de : Les red flags dès le premier RDV",
+      "voiceover": "[ POINT 2 — voix off ] ex: « Et ce que la plupart des gens ignorent... »",
+      "image_prompt": "couple sitting together at cafe table, warm golden hour light, candid intimate moment, bokeh background, ultra realistic, amateur iPhone photo, 9:16 Clean final photo export. No camera app interface. No iPhone UI. No shutter button. No screen overlay. No recording indicators. No app icons. No status bar. No notifications. No screenshot appearance. Professional final image only."
+    },
+    {
+      "scene_number": 7,
+      "type": "talking-head",
+      "duration_seconds": 7,
+      "role": "development",
+      "description": "Aly approfondit avec une anecdote personnelle ou un exemple concret sur : Les red flags dès le premier RDV",
+      "voiceover": "[ ANECDOTE / EXEMPLE ] ex: « Une amie m'a dit quelque chose qui a tout changé... »",
+      "image_prompt": "Aly talking to camera with thoughtful reflective expression, cozy bedroom with Pokémon plushies visible, warm light, green eyes, ultra realistic, 9:16, deep navy slip-style top with wide spaghetti straps and low square neckline, curly deep red hair pulled into a low messy ponytail with loose strands, glowy skin, soft terracotta lip, subtle bronzer on cheeks, large glossy black rectangular frames, RØDE NT-USB Mini clipped to boom arm, barely visible at frame edge Clean final photo export. No camera app interface. No iPhone UI. No shutter button. No screen overlay. No recording indicators. No app icons. No status bar. No notifications. No screenshot appearance. Professional final image only."
+    },
+    {
+      "scene_number": 8,
+      "type": "reaction",
+      "duration_seconds": 5,
+      "role": "development",
+      "description": "Réaction émotionnelle d'Aly — twist ou révélation sur : Les red flags dès le premier RDV",
+      "voiceover": "[ TWIST ] ex: « Et la vérité que personne ne dit... c'est ça. »",
+      "image_prompt": "Aly close-up face with skeptical expression, slightly raised eyebrow, lips pressed together, green eyes, freckles, soft natural light, ultra realistic, amateur iPhone quality, 9:16, deep navy slip-style top with wide spaghetti straps and low square neckline, curly deep red hair pulled into a low messy ponytail with loose strands, glowy skin, soft terracotta lip, subtle bronzer on cheeks, large glossy black rectangular frames, RØDE NT-USB Mini clipped to boom arm, barely visible at frame edge Clean final photo export. No camera app interface. No iPhone UI. No shutter button. No screen overlay. No recording indicators. No app icons. No status bar. No notifications. No screenshot appearance. Professional final image only."
+    },
+    {
+      "scene_number": 9,
+      "type": "talking-head",
+      "duration_seconds": 7,
+      "role": "conseil",
+      "description": "Aly donne le conseil clé ou la leçon retenue sur : Les red flags dès le premier RDV",
+      "voiceover": "[ CONSEIL / LEÇON ] ex: « Ce que j'ai retenu de tout ça, c'est simple : ... »",
+      "image_prompt": "Aly talking to camera with serious thoughtful expression, cozy bedroom warm light, green eyes, ultra realistic, 9:16, deep navy slip-style top with wide spaghetti straps and low square neckline, curly deep red hair pulled into a low messy ponytail with loose strands, glowy skin, soft terracotta lip, subtle bronzer on cheeks, large glossy black rectangular frames, RØDE NT-USB Mini clipped to boom arm, barely visible at frame edge Clean final photo export. No camera app interface. No iPhone UI. No shutter button. No screen overlay. No recording indicators. No app icons. No status bar. No notifications. No screenshot appearance. Professional final image only."
+    },
+    {
+      "scene_number": 10,
+      "type": "talking-head",
+      "duration_seconds": 6,
+      "role": "cta",
+      "description": "Aly conclut avec un appel à l'action — question à la communauté sur : Les red flags dès le premier RDV",
+      "voiceover": "[ CTA ] ex: « Et toi, t'as déjà vécu ça ? Dis-moi en commentaire 👇 »",
+      "image_prompt": "Aly talking to camera with confident direct expression, pointing finger toward camera, cozy bedroom, green eyes, ultra realistic, 9:16, deep navy slip-style top with wide spaghetti straps and low square neckline, curly deep red hair pulled into a low messy ponytail with loose strands, glowy skin, soft terracotta lip, subtle bronzer on cheeks, large glossy black rectangular frames, RØDE NT-USB Mini clipped to boom arm, barely visible at frame edge Clean final photo export. No camera app interface. No iPhone UI. No shutter button. No screen overlay. No recording indicators. No app icons. No status bar. No notifications. No screenshot appearance. Professional final image only."
+    }
+  ]
+}

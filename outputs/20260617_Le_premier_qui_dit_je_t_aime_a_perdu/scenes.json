@@ -1,0 +1,104 @@
+{
+  "title": "Le premier qui dit je t'aime a perdu",
+  "topic": "Le jeu de l'indifférence dans l'amour",
+  "duration_seconds": 59,
+  "appearance": {
+    "outfit": "dusty rose wrap blouse with deep wide V-neckline",
+    "hairstyle": "curly deep red hair loosely piled in a high bun with soft face-framing tendrils",
+    "makeup": "light warm foundation, dusty mauve lip, subtle smoky lower lash line",
+    "glasses": "large glossy black rectangular frames",
+    "microphone": "RØDE NT-USB Mini on boom arm positioned slightly left of frame"
+  },
+  "scenes": [
+    {
+      "scene_number": 1,
+      "type": "talking-head",
+      "duration_seconds": 5,
+      "role": "hook",
+      "description": "Aly face caméra, légère plongée, regard fixe. Provocation calme, presque dure.",
+      "voiceover": "Le premier qui dit je t'aime... a perdu. C'est ce qu'on t'a appris. Et c'est pour ça que t'es seule ce soir.",
+      "image_prompt": "Aly talking directly to camera with calm provocative expression, intense fixed gaze, slight high-angle shot, cozy bedroom warm light, freckles, green eyes, ultra realistic, amateur iPhone photo quality, 9:16, dusty rose wrap blouse with deep wide V-neckline, curly deep red hair loosely piled in a high bun with soft face-framing tendrils, light warm foundation, dusty mauve lip, subtle smoky lower lash line, large glossy black rectangular frames, RØDE NT-USB Mini on boom arm positioned slightly left of frame Clean final photo export. No camera app interface. No iPhone UI. No shutter button. No screen overlay. No recording indicators. No app icons. No status bar. No notifications. No screenshot appearance. Professional final image only."
+    },
+    {
+      "scene_number": 2,
+      "type": "talking-head",
+      "duration_seconds": 6,
+      "role": "setup",
+      "description": "Face caméra, neutre. Constat posé.",
+      "voiceover": "On a transformé l'amour en compétition. Sans s'en rendre compte.",
+      "image_prompt": "Aly talking to camera with neutral matter-of-fact expression, direct eye contact, cozy bedroom natural daylight, green eyes, ultra realistic, 9:16, dusty rose wrap blouse with deep wide V-neckline, curly deep red hair loosely piled in a high bun with soft face-framing tendrils, light warm foundation, dusty mauve lip, subtle smoky lower lash line, large glossy black rectangular frames, RØDE NT-USB Mini on boom arm positioned slightly left of frame Clean final photo export. No camera app interface. No iPhone UI. No shutter button. No screen overlay. No recording indicators. No app icons. No status bar. No notifications. No screenshot appearance. Professional final image only."
+    },
+    {
+      "scene_number": 3,
+      "type": "talking-head",
+      "duration_seconds": 6,
+      "role": "development",
+      "description": "Regard vers la gauche, comme si elle citait quelqu'un. Ironie amère.",
+      "voiceover": "Celui qui s'attache en premier, il est faible. Celui qui répond trois heures après, il a gagné.",
+      "image_prompt": "Aly looking slightly left with bitter ironic expression, eyes glancing left as if quoting someone, cozy bedroom warm light, green eyes, freckles, ultra realistic, amateur iPhone quality, 9:16, dusty rose wrap blouse with deep wide V-neckline, curly deep red hair loosely piled in a high bun with soft face-framing tendrils, light warm foundation, dusty mauve lip, subtle smoky lower lash line, large glossy black rectangular frames, RØDE NT-USB Mini on boom arm positioned slightly left of frame Clean final photo export. No camera app interface. No iPhone UI. No shutter button. No screen overlay. No recording indicators. No app icons. No status bar. No notifications. No screenshot appearance. Professional final image only."
+    },
+    {
+      "scene_number": 4,
+      "type": "talking-head",
+      "duration_seconds": 6,
+      "role": "development",
+      "description": "Face caméra, léger recul. Lassitude.",
+      "voiceover": "Alors tout le monde joue. Tout le monde fait semblant de moins aimer.",
+      "image_prompt": "Aly talking to camera with weary resigned expression, slight backward lean, cozy bedroom warm light, green eyes, ultra realistic, 9:16, dusty rose wrap blouse with deep wide V-neckline, curly deep red hair loosely piled in a high bun with soft face-framing tendrils, light warm foundation, dusty mauve lip, subtle smoky lower lash line, large glossy black rectangular frames, RØDE NT-USB Mini on boom arm positioned slightly left of frame Clean final photo export. No camera app interface. No iPhone UI. No shutter button. No screen overlay. No recording indicators. No app icons. No status bar. No notifications. No screenshot appearance. Professional final image only."
+    },
+    {
+      "scene_number": 5,
+      "type": "talking-head",
+      "duration_seconds": 6,
+      "role": "development",
+      "description": "Regard vers la droite, baissé. Vulnérabilité naissante.",
+      "voiceover": "Pour pas être celui qui aime trop. Celui qui se montre.",
+      "image_prompt": "Aly with emerging vulnerable expression, gaze lowered and turned slightly right, soft cozy bedroom light, green eyes, freckles, ultra realistic, amateur iPhone quality, 9:16, dusty rose wrap blouse with deep wide V-neckline, curly deep red hair loosely piled in a high bun with soft face-framing tendrils, light warm foundation, dusty mauve lip, subtle smoky lower lash line, large glossy black rectangular frames, RØDE NT-USB Mini on boom arm positioned slightly left of frame Clean final photo export. No camera app interface. No iPhone UI. No shutter button. No screen overlay. No recording indicators. No app icons. No status bar. No notifications. No screenshot appearance. Professional final image only."
+    },
+    {
+      "scene_number": 6,
+      "type": "talking-head",
+      "duration_seconds": 6,
+      "role": "development",
+      "description": "Face caméra, léger rapprochement. Tension douce.",
+      "voiceover": "Et tu sais ce qui arrive ? Deux personnes qui se plaisent vraiment...",
+      "image_prompt": "Aly talking to camera with soft tense expression, slight lean toward camera, eyebrows slightly raised, cozy bedroom warm light, green eyes, ultra realistic, 9:16, dusty rose wrap blouse with deep wide V-neckline, curly deep red hair loosely piled in a high bun with soft face-framing tendrils, light warm foundation, dusty mauve lip, subtle smoky lower lash line, large glossy black rectangular frames, RØDE NT-USB Mini on boom arm positioned slightly left of frame Clean final photo export. No camera app interface. No iPhone UI. No shutter button. No screen overlay. No recording indicators. No app icons. No status bar. No notifications. No screenshot appearance. Professional final image only."
+    },
+    {
+      "scene_number": 7,
+      "type": "reaction",
+      "duration_seconds": 6,
+      "role": "development",
+      "description": "Profil ou regard dans le vide. Tristesse retenue.",
+      "voiceover": "Assises l'une en face de l'autre. À jouer l'indifférence si bien... qu'elles se perdent pour de vrai.",
+      "image_prompt": "Aly with restrained sadness, three-quarter profile, eyes unfocused gazing into distance, soft warm cozy bedroom light, green eyes, freckles, ultra realistic, amateur iPhone quality, 9:16, dusty rose wrap blouse with deep wide V-neckline, curly deep red hair loosely piled in a high bun with soft face-framing tendrils, light warm foundation, dusty mauve lip, subtle smoky lower lash line, large glossy black rectangular frames, RØDE NT-USB Mini on boom arm positioned slightly left of frame Clean final photo export. No camera app interface. No iPhone UI. No shutter button. No screen overlay. No recording indicators. No app icons. No status bar. No notifications. No screenshot appearance. Professional final image only."
+    },
+    {
+      "scene_number": 8,
+      "type": "reaction",
+      "duration_seconds": 5,
+      "role": "development",
+      "description": "Gros plan visage. Émotion pleine.",
+      "voiceover": "Tu protèges ton cœur tellement fort... que plus personne arrive à entrer.",
+      "image_prompt": "Aly close-up face with full emotional expression, eyes glistening, close-up face shot, soft warm light, green eyes, freckles, ultra realistic, amateur iPhone quality, 9:16, dusty rose wrap blouse with deep wide V-neckline, curly deep red hair loosely piled in a high bun with soft face-framing tendrils, light warm foundation, dusty mauve lip, subtle smoky lower lash line, large glossy black rectangular frames, RØDE NT-USB Mini on boom arm positioned slightly left of frame Clean final photo export. No camera app interface. No iPhone UI. No shutter button. No screen overlay. No recording indicators. No app icons. No status bar. No notifications. No screenshot appearance. Professional final image only."
+    },
+    {
+      "scene_number": 9,
+      "type": "talking-head",
+      "duration_seconds": 7,
+      "role": "conseil",
+      "description": "Face caméra, regard franc, lumière plus chaude. Bascule, libération.",
+      "voiceover": "Mais le premier qui dit je t'aime, c'est pas le perdant. C'est le seul qui a eu le courage.",
+      "image_prompt": "Aly talking to camera with liberated frank gaze, open confident expression, warmer golden light, cozy bedroom golden warm light, green eyes, ultra realistic, 9:16, dusty rose wrap blouse with deep wide V-neckline, curly deep red hair loosely piled in a high bun with soft face-framing tendrils, light warm foundation, dusty mauve lip, subtle smoky lower lash line, large glossy black rectangular frames, RØDE NT-USB Mini on boom arm positioned slightly left of frame Clean final photo export. No camera app interface. No iPhone UI. No shutter button. No screen overlay. No recording indicators. No app icons. No status bar. No notifications. No screenshot appearance. Professional final image only."
+    },
+    {
+      "scene_number": 10,
+      "type": "talking-head",
+      "duration_seconds": 6,
+      "role": "cta",
+      "description": "Face caméra, voix plus basse, léger sourire triste. Douceur, invitation.",
+      "voiceover": "Le reste, c'est juste des gens qui ont eu peur en même temps. Dis-moi en commentaire : t'as déjà laissé partir quelqu'un par fierté ?",
+      "image_prompt": "Aly talking to camera with gentle bittersweet slight smile, soft inviting expression, voice quieter, cozy bedroom soft warm light, green eyes, freckles, ultra realistic, 9:16, dusty rose wrap blouse with deep wide V-neckline, curly deep red hair loosely piled in a high bun with soft face-framing tendrils, light warm foundation, dusty mauve lip, subtle smoky lower lash line, large glossy black rectangular frames, RØDE NT-USB Mini on boom arm positioned slightly left of frame Clean final photo export. No camera app interface. No iPhone UI. No shutter button. No screen overlay. No recording indicators. No app icons. No status bar. No notifications. No screenshot appearance. Professional final image only."
+    }
+  ]
+}
