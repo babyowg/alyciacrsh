@@ -23,7 +23,7 @@ SCENE_TEMPLATES = [
         "role": "hook",
         "description_template": "Aly face caméra, expression choquée ou intriguée, accroche immédiate sur le sujet : {topic}",
         "voiceover_template": "[ HOOK — question choc ou révélation ] ex: « {topic} — et personne ne t'en parle. »",
-        "image_prompt_template": "Aly talking directly to camera with shocked expression, RØDE microphone visible, cozy bedroom warm light, wide neckline feminine top, curly deep red hair, black glasses, freckles, ultra realistic, amateur iPhone photo quality, 9:16",
+        "image_prompt_template": "Aly talking directly to camera with shocked wide-eyed expression, RØDE microphone visible, cozy bedroom warm light, wide neckline feminine top, curly deep red hair, black glasses, freckles, ultra realistic, amateur iPhone photo quality, 9:16",
     },
     {
         "scene_number": 2,
@@ -32,7 +32,7 @@ SCENE_TEMPLATES = [
         "role": "setup",
         "description_template": "Aly introduit le contexte, pose la situation liée à : {topic}",
         "voiceover_template": "[ SETUP — contexte ] ex: « Laisse-moi t'expliquer ce qui m'est arrivé / ce que j'ai observé... »",
-        "image_prompt_template": "Aly talking to camera with engaged expression, RØDE microphone, cozy bedroom natural daylight, curly deep red hair, green eyes, black glasses, ultra realistic, 9:16",
+        "image_prompt_template": "Aly talking to camera with serious focused expression, RØDE microphone, cozy bedroom natural daylight, curly deep red hair, green eyes, black glasses, ultra realistic, 9:16",
     },
     {
         "scene_number": 3,
@@ -50,7 +50,7 @@ SCENE_TEMPLATES = [
         "role": "development",
         "description_template": "Gros plan réaction d'Aly face à une révélation ou situation liée à : {topic}",
         "voiceover_template": "[ RÉACTION ] ex: « Et là... j'ai compris. »",
-        "image_prompt_template": "Aly close-up face reaction shot, surprised or emotional expression, green eyes wide, curly deep red hair, black glasses, soft warm light, ultra realistic, amateur iPhone quality, 9:16",
+        "image_prompt_template": "Aly close-up face reaction shot, concerned or disappointed expression, green eyes slightly narrowed, curly deep red hair, black glasses, soft warm light, ultra realistic, amateur iPhone quality, 9:16",
     },
     {
         "scene_number": 5,
@@ -59,7 +59,7 @@ SCENE_TEMPLATES = [
         "role": "development",
         "description_template": "Aly développe le premier point clé sur : {topic}",
         "voiceover_template": "[ POINT 1 ] ex: « La première chose à savoir, c'est que... »",
-        "image_prompt_template": "Aly talking to camera gesturing with hand, RØDE microphone, cozy bedroom warm light, wide neckline top, curly deep red hair, black glasses, ultra realistic, 9:16",
+        "image_prompt_template": "Aly talking to camera with neutral confident expression, gesturing with hand, RØDE microphone, cozy bedroom warm light, wide neckline top, curly deep red hair, black glasses, ultra realistic, 9:16",
     },
     {
         "scene_number": 6,
@@ -77,7 +77,7 @@ SCENE_TEMPLATES = [
         "role": "development",
         "description_template": "Aly approfondit avec une anecdote personnelle ou un exemple concret sur : {topic}",
         "voiceover_template": "[ ANECDOTE / EXEMPLE ] ex: « Une amie m'a dit quelque chose qui a tout changé... »",
-        "image_prompt_template": "Aly talking to camera with warm smile, RØDE microphone, cozy bedroom with Pokémon plushies visible, warm light, wide neckline top, curly deep red hair, black glasses, ultra realistic, 9:16",
+        "image_prompt_template": "Aly talking to camera with thoughtful reflective expression, RØDE microphone, cozy bedroom with Pokémon plushies visible, warm light, wide neckline top, curly deep red hair, black glasses, ultra realistic, 9:16",
     },
     {
         "scene_number": 8,
@@ -86,7 +86,7 @@ SCENE_TEMPLATES = [
         "role": "development",
         "description_template": "Réaction émotionnelle d'Aly — twist ou révélation sur : {topic}",
         "voiceover_template": "[ TWIST ] ex: « Et la vérité que personne ne dit... c'est ça. »",
-        "image_prompt_template": "Aly close-up face with knowing smile, slightly raised eyebrow, green eyes, curly deep red hair, black glasses, soft natural light, ultra realistic, amateur iPhone quality, 9:16",
+        "image_prompt_template": "Aly close-up face with skeptical expression, slightly raised eyebrow, lips pressed together, green eyes, curly deep red hair, black glasses, soft natural light, ultra realistic, amateur iPhone quality, 9:16",
     },
     {
         "scene_number": 9,
@@ -104,7 +104,7 @@ SCENE_TEMPLATES = [
         "role": "cta",
         "description_template": "Aly conclut avec un appel à l'action — question à la communauté sur : {topic}",
         "voiceover_template": "[ CTA ] ex: « Et toi, t'as déjà vécu ça ? Dis-moi en commentaire 👇 »",
-        "image_prompt_template": "Aly talking to camera with open inviting smile, pointing finger toward camera, RØDE microphone, cozy bedroom, curly deep red hair, black glasses, ultra realistic, 9:16",
+        "image_prompt_template": "Aly talking to camera with confident direct expression, pointing finger toward camera, RØDE microphone, cozy bedroom, curly deep red hair, black glasses, ultra realistic, 9:16",
     },
 ]
 
