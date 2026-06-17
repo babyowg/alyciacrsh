@@ -1,0 +1,70 @@
+SCÈNE 1
+
+Texte : "Le premier qui dit je t'aime... a perdu. C'est ce qu'on t'a appris. Et c'est pour ça que t'es seule ce soir."
+
+Émotion : provocation calme, presque dure
+
+Plan : face caméra, légère plongée, regard fixe
+SCÈNE 2
+
+Texte : "On a transformé l'amour en compétition. Sans s'en rendre compte."
+
+Émotion : constat
+
+Plan : face caméra, neutre
+SCÈNE 3
+
+Texte : "Celui qui s'attache en premier, il est faible. Celui qui répond trois heures après, il a gagné."
+
+Émotion : ironie amère
+
+Plan : regard gauche, comme si elle citait quelqu'un
+SCÈNE 4
+
+Texte : "Alors tout le monde joue. Tout le monde fait semblant de moins aimer."
+
+Émotion : lassitude
+
+Plan : face caméra, léger recul
+SCÈNE 5
+
+Texte : "Pour pas être celui qui aime trop. Celui qui se montre."
+
+Émotion : vulnérabilité naissante
+
+Plan : regard droite, baissé
+SCÈNE 6
+
+Texte : "Et tu sais ce qui arrive ? Deux personnes qui se plaisent vraiment..."
+
+Émotion : tension douce
+
+Plan : face caméra, rapprochement léger
+SCÈNE 7
+
+Texte : "Assises l'une en face de l'autre. À jouer l'indifférence si bien... qu'elles se perdent pour de vrai."
+
+Émotion : tristesse retenue
+
+Plan : profil ou regard dans le vide
+SCÈNE 8
+
+Texte : "Tu protèges ton cœur tellement fort... que plus personne arrive à entrer."
+
+Émotion : émotion pleine
+
+Plan : face caméra, gros plan visage
+SCÈNE 9
+
+Texte : "Mais le premier qui dit je t'aime, c'est pas le perdant. C'est le seul qui a eu le courage."
+
+Émotion : bascule, libération
+
+Plan : face caméra, regard franc, lumière plus chaude
+SCÈNE 10
+
+Texte : "Le reste, c'est juste des gens qui ont eu peur en même temps. Dis-moi en commentaire : t'as déjà laissé partir quelqu'un par fierté ?"
+
+Émotion : douceur, invitation
+
+Plan : face caméra, voix plus basse, léger sourire triste
