@@ -11,7 +11,7 @@ BASE_URL = "https://alexya.ai/api/v1"
 OUTPUT_DIR = Path("outputs")
 
 
-def generate_image(prompt: str) -> Path:
+def create_image_job(prompt: str, aspect_ratio: str = "9:16") -> dict:
     if not API_KEY:
         raise ValueError("ALEXYA_API_KEY manquante dans .env")
 
@@ -22,31 +22,27 @@ def generate_image(prompt: str) -> Path:
 
     payload = {
         "prompt": prompt,
+        "mode": "high_quality",
+        "aspect_ratio": aspect_ratio,
     }
 
-    print(f"Génération en cours pour : {prompt!r}")
+    print(f"Création du job pour : {prompt!r} (aspect_ratio={aspect_ratio})")
     response = requests.post(f"{BASE_URL}/image/generate", headers=headers, json=payload)
-    response.raise_for_status()
+
+    print(f"Statut HTTP : {response.status_code}")
     data = response.json()
-
-    # Adapter selon la réponse réelle de l'API
-    image_url = data.get("url") or data.get("image_url") or data["data"][0]["url"]
-
-    OUTPUT_DIR.mkdir(exist_ok=True)
-    slug = prompt[:40].replace(" ", "_").replace("/", "-")
-    output_path = OUTPUT_DIR / f"{slug}.png"
-
-    image_data = requests.get(image_url).content
-    output_path.write_bytes(image_data)
-
-    print(f"Image sauvegardée : {output_path}")
-    return output_path
+    print("Réponse JSON complète :")
+    import json
+    print(json.dumps(data, indent=2, ensure_ascii=False))
+    return data
 
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage : python generate_image.py \"votre prompt ici\"")
+        print("Usage : python generate_image.py \"votre prompt\" [aspect_ratio]")
+        print("Aspect ratios disponibles : 1:1  16:9  9:16  4:3  3:4  5:4  4:5")
         sys.exit(1)
 
-    prompt = " ".join(sys.argv[1:])
-    generate_image(prompt)
+    prompt = sys.argv[1]
+    aspect_ratio = sys.argv[2] if len(sys.argv) > 2 else "9:16"
+    create_image_job(prompt, aspect_ratio)
