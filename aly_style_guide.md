@@ -78,7 +78,35 @@ Aly [action/situation], [lieu/décor], [lumière], [détail tenue], ultra realis
 
 ---
 
-## Règle absolue — Aucune interface smartphone dans les images
+## Cohérence d'apparence par vidéo
+
+Pour chaque content pack généré, Aly adopte **une apparence unique et cohérente** sur toute la durée de la vidéo.
+
+### Règle de génération
+
+- L'apparence est tirée aléatoirement à chaque nouveau content pack (tenue, coiffure, maquillage, lunettes, micro).
+- Elle est ensuite **verrouillée pour toutes les scènes** de ce pack.
+- Un nouveau pack = une nouvelle apparence possible.
+
+### Ce qui est verrouillé dans un pack
+
+| Élément | Contrainte permanente |
+|---------|----------------------|
+| Tenue | Toujours féminine, décolleté large ou wide neckline, jamais vulgaire |
+| Coiffure | Cheveux bouclés rouge profond (auburn/bordeaux) — style peut varier |
+| Maquillage | Naturel à élaboré, jamais excessif |
+| Lunettes | Grandes montures noires (formes possibles : rectangulaire, carrée, acétate) |
+| Micro | RØDE (modèle et position peuvent varier) |
+
+### Ce qui peut changer entre les scènes
+
+- Expression du visage
+- Pose et gestuelle
+- Angle de caméra
+- Lieu (chambre, café, extérieur en b-roll)
+- Ambiance lumineuse si cohérente avec la scène
+
+> L'objectif : le spectateur doit avoir l'impression que toutes les images ont été tournées lors de la **même session d'enregistrement**.
 
 **Toutes les images générées doivent être des photos finales propres, sans aucun élément d'interface.**
 

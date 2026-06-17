@@ -1,7 +1,7 @@
 import os
 import sys
 import json
-import hashlib
+import random
 import datetime
 from pathlib import Path
 from dotenv import load_dotenv
@@ -17,54 +17,71 @@ PROMPT_SUFFIX = (
 )
 
 # ---------------------------------------------------------------------------
-# Appearance presets — one is chosen per content pack and held constant
-# across every scene so all images feel like the same recording session.
-# Keys map directly to prompt fragments injected into every image prompt.
+# Appearance component pools
+# Each run picks ONE value from each pool and locks it for the entire pack.
+# Outfits always include a wide or large neckline as required by the style guide.
 # ---------------------------------------------------------------------------
-APPEARANCE_PRESETS = [
-    {
-        "id": "preset_A",
-        "outfit": "oversized cream ribbed knit sweater with wide neckline",
-        "hairstyle": "loose curly deep red hair down over shoulders",
-        "makeup": "natural minimal makeup, light lip gloss, subtle mascara",
-        "glasses": "large glossy black rectangular frames",
-        "microphone": "RØDE NT-USB Mini on boom arm, slightly left of frame",
-    },
-    {
-        "id": "preset_B",
-        "outfit": "fitted black scoop-neck long sleeve top",
-        "hairstyle": "curly deep red hair half-up half-down with loose strands framing face",
-        "makeup": "soft matte skin, nude lip, defined brows",
-        "glasses": "large glossy black rectangular frames",
-        "microphone": "RØDE NT-USB Mini on boom arm, slightly left of frame",
-    },
-    {
-        "id": "preset_C",
-        "outfit": "sage green wrap-style blouse with wide neckline",
-        "hairstyle": "curly deep red hair pulled loosely to one side",
-        "makeup": "dewy skin, soft rose lip, light blush",
-        "glasses": "large glossy black rectangular frames",
-        "microphone": "RØDE NT-USB Mini on boom arm, slightly left of frame",
-    },
-    {
-        "id": "preset_D",
-        "outfit": "white linen button-down shirt open at neckline",
-        "hairstyle": "curly deep red hair down, natural volume, no accessories",
-        "makeup": "fresh bare-skin look, tinted moisturizer, clear lip",
-        "glasses": "large glossy black rectangular frames",
-        "microphone": "RØDE NT-USB Mini on boom arm, slightly left of frame",
-    },
+OUTFIT_POOL = [
+    "oversized cream ribbed knit sweater with wide open neckline",
+    "fitted burgundy velvet crop top with wide square neckline",
+    "soft lilac off-shoulder knit top with loose wide neckline",
+    "black satin camisole with wide spaghetti-strap neckline and lace trim",
+    "dusty rose wrap blouse with deep wide V-neckline",
+    "white broderie anglaise blouse with large bardot neckline",
+    "terracotta ribbed tank top with wide scoop neckline",
+    "sage green oversized shirt open wide at the neckline, tied loosely",
+    "cobalt blue linen blouse with relaxed wide boat neckline",
+    "ivory chunky knit cardigan worn open over matching wide-neck bralette",
+    "soft grey marl oversized sweatshirt with wide dropped neckline",
+    "deep navy slip-style top with wide spaghetti straps and low square neckline",
+]
+
+HAIRSTYLE_POOL = [
+    "loose curly deep red hair flowing down over shoulders",
+    "curly deep red hair loosely piled in a high bun with soft face-framing tendrils",
+    "curly deep red hair pulled into a low messy ponytail with loose strands",
+    "curly deep red hair half-up with a small clip, rest falling freely",
+    "curly deep red hair parted to the side, cascading over one shoulder",
+    "voluminous curly deep red hair down with a thin headband pushed back",
+    "curly deep red hair in a loose braid over one shoulder with flyaways",
+]
+
+MAKEUP_POOL = [
+    "natural minimal makeup, soft nude lip, light mascara",
+    "fresh dewy skin, rosy tinted lip balm, feathered brows",
+    "matte even skin, deep berry lip, defined lashes",
+    "glowy skin, soft terracotta lip, subtle bronzer on cheeks",
+    "porcelain bare-skin look, clear gloss, groomed brows",
+    "light warm foundation, dusty mauve lip, subtle smoky lower lash line",
+    "natural freckles visible through sheer coverage, coral lip, no-makeup makeup",
+]
+
+GLASSES_POOL = [
+    "large glossy black rectangular frames",
+    "oversized matte black square frames",
+    "large black acetate frames with subtle tortoiseshell inner rim",
+]
+
+MICROPHONE_POOL = [
+    "RØDE NT-USB Mini on boom arm positioned slightly left of frame",
+    "RØDE VideoMic on desk stand at lower left of frame",
+    "RØDE NT-USB Mini clipped to boom arm, barely visible at frame edge",
 ]
 
 
-def pick_appearance(topic):
-    """Pick a preset deterministically from the topic so re-runs are stable."""
-    index = int(hashlib.md5(topic.encode()).hexdigest(), 16) % len(APPEARANCE_PRESETS)
-    return APPEARANCE_PRESETS[index]
+def generate_appearance():
+    """Pick one element from each pool at random. Fresh every run."""
+    return {
+        "outfit": random.choice(OUTFIT_POOL),
+        "hairstyle": random.choice(HAIRSTYLE_POOL),
+        "makeup": random.choice(MAKEUP_POOL),
+        "glasses": random.choice(GLASSES_POOL),
+        "microphone": random.choice(MICROPHONE_POOL),
+    }
 
 
 def appearance_fragment(appearance):
-    """Return the prompt fragment that describes Aly's locked appearance."""
+    """Single prompt fragment encoding the full locked appearance."""
     return (
         "{outfit}, {hairstyle}, {makeup}, {glasses}, {microphone}".format(**appearance)
     )
@@ -72,8 +89,7 @@ def appearance_fragment(appearance):
 
 # ---------------------------------------------------------------------------
 # Scene templates
-# Appearance details are NOT hardcoded here — they are injected at
-# build_scenes() time from the chosen preset so every prompt is consistent.
+# Appearance is NOT embedded here — it is injected at build time.
 # ---------------------------------------------------------------------------
 SCENE_TEMPLATES = [
     {
@@ -168,7 +184,7 @@ SCENE_TEMPLATES = [
     },
 ]
 
-# B-roll scenes have no Aly face — appearance fragment is omitted for those.
+# B-roll scenes show no Aly face — skip appearance injection.
 BROLL_SCENES = {3, 6}
 
 
@@ -180,10 +196,8 @@ def build_scenes(topic, appearance):
         base = t["image_prompt_base"]
 
         if n in BROLL_SCENES:
-            # B-roll: environment only, no Aly appearance details needed.
             full_prompt = base + " " + PROMPT_SUFFIX
         else:
-            # Insert appearance fragment right after the base description.
             full_prompt = base + ", " + frag + " " + PROMPT_SUFFIX
 
         scene = {
@@ -200,17 +214,16 @@ def build_scenes(topic, appearance):
 
 
 def generate_plan(topic):
-    appearance = pick_appearance(topic)
+    appearance = generate_appearance()
     scenes = build_scenes(topic, appearance)
     total_duration = sum(s["duration_seconds"] for s in scenes)
-    plan = {
+    return {
         "title": "[ TITRE À COMPLÉTER ] — " + topic,
         "topic": topic,
         "duration_seconds": total_duration,
         "appearance": appearance,
         "scenes": scenes,
     }
-    return plan
 
 
 def save_pack(topic, plan):
@@ -219,18 +232,15 @@ def save_pack(topic, plan):
     pack_dir = OUTPUT_BASE / (timestamp + "_" + slug)
     pack_dir.mkdir(parents=True, exist_ok=True)
 
-    scenes_path = pack_dir / "scenes.json"
-    scenes_path.write_text(json.dumps(plan, indent=2, ensure_ascii=False), encoding="utf-8")
-
-    plan_md = _build_plan_md(plan)
-    plan_path = pack_dir / "plan.md"
-    plan_path.write_text(plan_md, encoding="utf-8")
-
+    (pack_dir / "scenes.json").write_text(
+        json.dumps(plan, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
+    (pack_dir / "plan.md").write_text(_build_plan_md(plan), encoding="utf-8")
     return pack_dir
 
 
 def _build_plan_md(plan):
-    appearance = plan.get("appearance", {})
+    a = plan.get("appearance", {})
     lines = [
         "# " + plan.get("title", "Plan vidéo"),
         "",
@@ -243,15 +253,15 @@ def _build_plan_md(plan):
         "",
         "## Apparence — session complète",
         "",
-        "> Ces détails sont identiques dans toutes les scènes.",
+        "> Ces détails sont identiques dans toutes les scènes de cette vidéo.",
         "",
         "| Élément | Choix pour cette vidéo |",
         "|---------|------------------------|",
-        "| Tenue | " + appearance.get("outfit", "") + " |",
-        "| Coiffure | " + appearance.get("hairstyle", "") + " |",
-        "| Maquillage | " + appearance.get("makeup", "") + " |",
-        "| Lunettes | " + appearance.get("glasses", "") + " |",
-        "| Micro | " + appearance.get("microphone", "") + " |",
+        "| Tenue       | " + a.get("outfit", "") + " |",
+        "| Coiffure    | " + a.get("hairstyle", "") + " |",
+        "| Maquillage  | " + a.get("makeup", "") + " |",
+        "| Lunettes    | " + a.get("glasses", "") + " |",
+        "| Micro       | " + a.get("microphone", "") + " |",
         "",
         "---",
         "",
@@ -262,24 +272,22 @@ def _build_plan_md(plan):
         stype = scene.get("type", "")
         dur = scene.get("duration_seconds", "?")
         role = scene.get("role", "").upper()
-        desc = scene.get("description", "")
-        vo = scene.get("voiceover", "")
-        prompt = scene.get("image_prompt", "")
-
-        lines.append("## Scène " + str(n) + " — " + stype + " · " + role + " (" + str(dur) + "s)")
-        lines.append("")
-        lines.append("**Description :** " + desc)
-        lines.append("")
-        lines.append("**Voix :** " + vo)
-        lines.append("")
-        lines.append("**Prompt image :** `" + prompt + "`")
-        lines.append("")
+        lines += [
+            "## Scène " + str(n) + " — " + stype + " · " + role + " (" + str(dur) + "s)",
+            "",
+            "**Description :** " + scene.get("description", ""),
+            "",
+            "**Voix :** " + scene.get("voiceover", ""),
+            "",
+            "**Prompt image :** `" + scene.get("image_prompt", "") + "`",
+            "",
+        ]
 
     return "\n".join(lines)
 
 
 def print_plan_summary(plan, pack_dir):
-    appearance = plan.get("appearance", {})
+    a = plan.get("appearance", {})
     print("\n" + "=" * 60)
     print("PLAN GÉNÉRÉ : " + plan.get("title", ""))
     print("=" * 60)
@@ -287,19 +295,15 @@ def print_plan_summary(plan, pack_dir):
     print("Durée     : " + str(plan.get("duration_seconds", "?")) + "s")
     print("Scènes    : " + str(len(plan.get("scenes", []))))
     print("\nApparence (session complète) :")
-    print("  Preset    : " + appearance.get("id", ""))
-    print("  Tenue     : " + appearance.get("outfit", ""))
-    print("  Coiffure  : " + appearance.get("hairstyle", ""))
-    print("  Maquillage: " + appearance.get("makeup", ""))
-    print("  Lunettes  : " + appearance.get("glasses", ""))
-    print("  Micro     : " + appearance.get("microphone", ""))
+    print("  Tenue      : " + a.get("outfit", ""))
+    print("  Coiffure   : " + a.get("hairstyle", ""))
+    print("  Maquillage : " + a.get("makeup", ""))
+    print("  Lunettes   : " + a.get("glasses", ""))
+    print("  Micro      : " + a.get("microphone", ""))
     print("\nDossier   : " + str(pack_dir))
     print("\nScènes :")
-
     for s in plan.get("scenes", []):
-        role = s.get("role", "").upper()
-        print("  [" + str(s["scene_number"]).zfill(2) + "] " + s["type"].ljust(12) + " " + str(s["duration_seconds"]) + "s · " + role)
-
+        print("  [" + str(s["scene_number"]).zfill(2) + "] " + s["type"].ljust(12) + " " + str(s["duration_seconds"]) + "s · " + s.get("role", "").upper())
     print()
 
 
