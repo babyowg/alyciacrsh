@@ -5,6 +5,7 @@ import time
 import mimetypes
 import requests
 from pathlib import Path
+from typing import List
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -153,7 +154,7 @@ def generate_scene_image(scene: dict, pack_dir: Path) -> Path:
     return output_path
 
 
-def generate_all(pack_dir: Path) -> list[Path]:
+def generate_all(pack_dir: Path) -> List[Path]:
     if not API_KEY:
         raise ValueError("ALEXYA_API_KEY manquante dans .env")
 

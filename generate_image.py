@@ -5,6 +5,7 @@ import time
 import mimetypes
 import requests
 from pathlib import Path
+from typing import Optional
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -78,7 +79,7 @@ def upload_reference(image_path: Path) -> str:
     return public_url
 
 
-def resolve_aly_reference() -> Path | None:
+def resolve_aly_reference() -> Optional[Path]:
     """Return the Aly identity reference image, or None if not found."""
     if ALY_MASTER.exists():
         return ALY_MASTER
@@ -94,7 +95,7 @@ def is_aly_prompt(prompt: str) -> bool:
     return any(k in prompt.lower() for k in keywords)
 
 
-def create_image_job(prompt: str, aspect_ratio: str = "9:16", scene_reference: Path | None = None) -> dict:
+def create_image_job(prompt: str, aspect_ratio: str = "9:16", scene_reference: Optional[Path] = None) -> dict:
     if not API_KEY:
         raise ValueError("ALEXYA_API_KEY manquante dans .env")
 
@@ -183,7 +184,7 @@ def download_image(output_url: str, prompt: str) -> Path:
     return output_path
 
 
-def generate(prompt: str, aspect_ratio: str = "9:16", scene_reference: Path | None = None) -> None:
+def generate(prompt: str, aspect_ratio: str = "9:16", scene_reference: Optional[Path] = None) -> None:
     job = create_image_job(prompt, aspect_ratio, scene_reference=scene_reference)
 
     poll_url = job.get("poll_url")
