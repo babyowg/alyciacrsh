@@ -25,7 +25,7 @@ def generate_image(prompt: str) -> Path:
     }
 
     print(f"Génération en cours pour : {prompt!r}")
-    response = requests.post(f"{BASE_URL}/images/generate", headers=headers, json=payload)
+    response = requests.post(f"{BASE_URL}/image/generate", headers=headers, json=payload)
     response.raise_for_status()
     data = response.json()
 
