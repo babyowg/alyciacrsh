@@ -125,10 +125,16 @@ def download_image(output_url: str, output_path: Path) -> None:
     output_path.write_bytes(img_data)
 
 
+def scene_filename(scene: dict) -> str:
+    n = scene["scene_number"]
+    role = scene.get("role", scene.get("type", "scene")).lower().replace(" ", "_")
+    return f"scene_{n:02d}_{role}.png"
+
+
 def generate_scene_image(scene: dict, pack_dir: Path) -> Path:
     n = scene["scene_number"]
     prompt = scene.get("image_prompt", "")
-    output_path = pack_dir / f"scene_{n:02d}.png"
+    output_path = pack_dir / scene_filename(scene)
 
     print(f"\n  Scène {n:02d} — {scene.get('type', '')} : {prompt[:60]}...")
 

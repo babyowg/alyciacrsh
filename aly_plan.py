@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-OUTPUT_BASE = Path("outputs/content_packs")
+OUTPUT_BASE = Path("outputs")
 
 PROMPT_SUFFIX = (
     "Clean final photo export. No camera app interface. No iPhone UI. No shutter button. "
@@ -138,8 +138,8 @@ def generate_plan(topic):
 
 
 def save_pack(topic, plan):
-    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    slug = topic[:30].replace(" ", "_").replace("/", "-")
+    timestamp = datetime.datetime.now().strftime("%Y%m%d")
+    slug = topic[:40].replace(" ", "_").replace("/", "-")
     pack_dir = OUTPUT_BASE / (timestamp + "_" + slug)
     pack_dir.mkdir(parents=True, exist_ok=True)
 
