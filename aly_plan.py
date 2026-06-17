@@ -2,105 +2,139 @@ import os
 import sys
 import json
 import datetime
-import requests
 from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv()
 
-ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 OUTPUT_BASE = Path("outputs/content_packs")
-STYLE_GUIDE = Path("aly_style_guide.md")
 
-ANTHROPIC_API_URL = "https://api.anthropic.com/v1/messages"
-ANTHROPIC_VERSION = "2023-06-01"
-MODEL = "claude-opus-4-8"
+SCENE_TEMPLATES = [
+    {
+        "scene_number": 1,
+        "type": "talking-head",
+        "duration_seconds": 5,
+        "role": "hook",
+        "description_template": "Aly face caméra, expression choquée ou intriguée, accroche immédiate sur le sujet : {topic}",
+        "voiceover_template": "[ HOOK — question choc ou révélation ] ex: « {topic} — et personne ne t'en parle. »",
+        "image_prompt_template": "Aly talking directly to camera with shocked expression, RØDE microphone visible, cozy bedroom warm light, wide neckline feminine top, curly deep red hair, black glasses, freckles, ultra realistic, amateur iPhone photo quality, 9:16",
+    },
+    {
+        "scene_number": 2,
+        "type": "talking-head",
+        "duration_seconds": 7,
+        "role": "setup",
+        "description_template": "Aly introduit le contexte, pose la situation liée à : {topic}",
+        "voiceover_template": "[ SETUP — contexte ] ex: « Laisse-moi t'expliquer ce qui m'est arrivé / ce que j'ai observé... »",
+        "image_prompt_template": "Aly talking to camera with engaged expression, RØDE microphone, cozy bedroom natural daylight, curly deep red hair, green eyes, black glasses, ultra realistic, 9:16",
+    },
+    {
+        "scene_number": 3,
+        "type": "b-roll",
+        "duration_seconds": 6,
+        "role": "development",
+        "description_template": "B-roll illustrant la situation ou l'émotion associée à : {topic}",
+        "voiceover_template": "[ VOIX OFF — narration ] ex: « Au début, tout semblait normal... »",
+        "image_prompt_template": "close-up hands holding smartphone with chat conversation visible, cozy bedroom background warm bokeh, natural light, ultra realistic, amateur iPhone quality, 9:16",
+    },
+    {
+        "scene_number": 4,
+        "type": "reaction",
+        "duration_seconds": 5,
+        "role": "development",
+        "description_template": "Gros plan réaction d'Aly face à une révélation ou situation liée à : {topic}",
+        "voiceover_template": "[ RÉACTION ] ex: « Et là... j'ai compris. »",
+        "image_prompt_template": "Aly close-up face reaction shot, surprised or emotional expression, green eyes wide, curly deep red hair, black glasses, soft warm light, ultra realistic, amateur iPhone quality, 9:16",
+    },
+    {
+        "scene_number": 5,
+        "type": "talking-head",
+        "duration_seconds": 7,
+        "role": "development",
+        "description_template": "Aly développe le premier point clé sur : {topic}",
+        "voiceover_template": "[ POINT 1 ] ex: « La première chose à savoir, c'est que... »",
+        "image_prompt_template": "Aly talking to camera gesturing with hand, RØDE microphone, cozy bedroom warm light, wide neckline top, curly deep red hair, black glasses, ultra realistic, 9:16",
+    },
+    {
+        "scene_number": 6,
+        "type": "b-roll",
+        "duration_seconds": 6,
+        "role": "development",
+        "description_template": "B-roll illustrant le deuxième aspect de : {topic}",
+        "voiceover_template": "[ POINT 2 — voix off ] ex: « Et ce que la plupart des gens ignorent... »",
+        "image_prompt_template": "couple sitting together at cafe table, warm golden hour light, candid intimate moment, bokeh background, ultra realistic, amateur iPhone photo, 9:16",
+    },
+    {
+        "scene_number": 7,
+        "type": "talking-head",
+        "duration_seconds": 7,
+        "role": "development",
+        "description_template": "Aly approfondit avec une anecdote personnelle ou un exemple concret sur : {topic}",
+        "voiceover_template": "[ ANECDOTE / EXEMPLE ] ex: « Une amie m'a dit quelque chose qui a tout changé... »",
+        "image_prompt_template": "Aly talking to camera with warm smile, RØDE microphone, cozy bedroom with Pokémon plushies visible, warm light, wide neckline top, curly deep red hair, black glasses, ultra realistic, 9:16",
+    },
+    {
+        "scene_number": 8,
+        "type": "reaction",
+        "duration_seconds": 5,
+        "role": "development",
+        "description_template": "Réaction émotionnelle d'Aly — twist ou révélation sur : {topic}",
+        "voiceover_template": "[ TWIST ] ex: « Et la vérité que personne ne dit... c'est ça. »",
+        "image_prompt_template": "Aly close-up face with knowing smile, slightly raised eyebrow, green eyes, curly deep red hair, black glasses, soft natural light, ultra realistic, amateur iPhone quality, 9:16",
+    },
+    {
+        "scene_number": 9,
+        "type": "talking-head",
+        "duration_seconds": 7,
+        "role": "conseil",
+        "description_template": "Aly donne le conseil clé ou la leçon retenue sur : {topic}",
+        "voiceover_template": "[ CONSEIL / LEÇON ] ex: « Ce que j'ai retenu de tout ça, c'est simple : ... »",
+        "image_prompt_template": "Aly talking to camera with serious thoughtful expression, RØDE microphone, cozy bedroom warm light, wide neckline top, curly deep red hair, black glasses, ultra realistic, 9:16",
+    },
+    {
+        "scene_number": 10,
+        "type": "talking-head",
+        "duration_seconds": 6,
+        "role": "cta",
+        "description_template": "Aly conclut avec un appel à l'action — question à la communauté sur : {topic}",
+        "voiceover_template": "[ CTA ] ex: « Et toi, t'as déjà vécu ça ? Dis-moi en commentaire 👇 »",
+        "image_prompt_template": "Aly talking to camera with open inviting smile, pointing finger toward camera, RØDE microphone, cozy bedroom, curly deep red hair, black glasses, ultra realistic, 9:16",
+    },
+]
 
 
-def load_style_guide() -> str:
-    if STYLE_GUIDE.exists():
-        return STYLE_GUIDE.read_text(encoding="utf-8")
-    return ""
+def build_scenes(topic):
+    scenes = []
+    for t in SCENE_TEMPLATES:
+        scene = {
+            "scene_number": t["scene_number"],
+            "type": t["type"],
+            "duration_seconds": t["duration_seconds"],
+            "role": t["role"],
+            "description": t["description_template"].format(topic=topic),
+            "voiceover": t["voiceover_template"].format(topic=topic),
+            "image_prompt": t["image_prompt_template"],
+        }
+        scenes.append(scene)
+    return scenes
 
 
 def generate_plan(topic):
-    if not ANTHROPIC_API_KEY:
-        raise ValueError("ANTHROPIC_API_KEY manquante dans .env")
-
-    style_guide = load_style_guide()
-
-    system_prompt = """Tu es le directeur créatif d'Aly, une influenceuse IA francophone spécialisée dans la niche couple & relations amoureuses.
-
-Voici le guide de style d'Aly :
-
-{style_guide}
-
-Ton rôle : à partir d'un sujet donné, générer un plan vidéo complet de 9 à 10 scènes pour une vidéo TikTok/Reels de 60 à 70 secondes.
-
-Réponds UNIQUEMENT avec un objet JSON valide (pas de markdown, pas de texte autour), avec cette structure exacte :
-
-{{
-  "title": "Titre accrocheur de la vidéo (en français)",
-  "topic": "sujet fourni",
-  "duration_seconds": 65,
-  "scenes": [
-    {{
-      "scene_number": 1,
-      "type": "talking-head|b-roll|reaction",
-      "duration_seconds": 6,
-      "description": "Description détaillée de ce qui se passe dans la scène",
-      "voiceover": "Ce qu'Aly dit exactement (en français)",
-      "image_prompt": "Prompt en anglais pour générer l'image AlexyaAI, inclure 'Aly' si Aly est visible"
-    }}
-  ]
-}}""".format(style_guide=style_guide)
-
-    headers = {
-        "x-api-key": ANTHROPIC_API_KEY,
-        "anthropic-version": ANTHROPIC_VERSION,
-        "content-type": "application/json",
+    scenes = build_scenes(topic)
+    total_duration = sum(s["duration_seconds"] for s in scenes)
+    plan = {
+        "title": "[ TITRE À COMPLÉTER ] — " + topic,
+        "topic": topic,
+        "duration_seconds": total_duration,
+        "scenes": scenes,
     }
-
-    payload = {
-        "model": MODEL,
-        "max_tokens": 4096,
-        "system": system_prompt,
-        "messages": [
-            {
-                "role": "user",
-                "content": "Crée un plan vidéo complet pour le sujet suivant : " + topic,
-            }
-        ],
-    }
-
-    print("Génération du plan pour : " + repr(topic))
-    print("Appel Claude " + MODEL + "...")
-
-    resp = requests.post(ANTHROPIC_API_URL, headers=headers, json=payload)
-
-    if resp.status_code != 200:
-        raise RuntimeError("Erreur API Anthropic (" + str(resp.status_code) + ") : " + resp.text)
-
-    data = resp.json()
-    content_blocks = data.get("content", [])
-    text_blocks = [b["text"] for b in content_blocks if b.get("type") == "text"]
-    if not text_blocks:
-        raise RuntimeError("Aucun bloc texte dans la réponse : " + str(data))
-
-    raw = text_blocks[-1].strip()
-
-    try:
-        plan = json.loads(raw)
-    except json.JSONDecodeError as e:
-        raise RuntimeError("Réponse Claude invalide (pas du JSON) : " + str(e) + "\n\nRéponse brute :\n" + raw)
-
     return plan
 
 
-def save_pack(topic: str, plan: dict) -> Path:
+def save_pack(topic, plan):
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     slug = topic[:30].replace(" ", "_").replace("/", "-")
-    pack_dir = OUTPUT_BASE / f"{timestamp}_{slug}"
+    pack_dir = OUTPUT_BASE / (timestamp + "_" + slug)
     pack_dir.mkdir(parents=True, exist_ok=True)
 
     scenes_path = pack_dir / "scenes.json"
@@ -113,43 +147,53 @@ def save_pack(topic: str, plan: dict) -> Path:
     return pack_dir
 
 
-def _build_plan_md(plan: dict) -> str:
+def _build_plan_md(plan):
     lines = [
-        f"# {plan.get('title', 'Plan vidéo')}",
-        f"\n**Sujet :** {plan.get('topic', '')}",
-        f"**Durée cible :** {plan.get('duration_seconds', '?')}s",
-        f"\n---\n",
+        "# " + plan.get("title", "Plan vidéo"),
+        "",
+        "**Sujet :** " + plan.get("topic", ""),
+        "**Durée cible :** " + str(plan.get("duration_seconds", "?")) + "s",
+        "",
+        "> Édite les lignes **Voix** et le **Titre** avant de générer les images.",
+        "",
+        "---",
+        "",
     ]
 
     for scene in plan.get("scenes", []):
         n = scene.get("scene_number", "?")
         stype = scene.get("type", "")
         dur = scene.get("duration_seconds", "?")
+        role = scene.get("role", "").upper()
         desc = scene.get("description", "")
         vo = scene.get("voiceover", "")
         prompt = scene.get("image_prompt", "")
 
-        lines.append(f"## Scène {n} — {stype} ({dur}s)")
-        lines.append(f"\n**Description :** {desc}")
-        lines.append(f"\n**Voix :** _{vo}_")
-        lines.append(f"\n**Prompt image :** `{prompt}`")
+        lines.append("## Scène " + str(n) + " — " + stype + " · " + role + " (" + str(dur) + "s)")
+        lines.append("")
+        lines.append("**Description :** " + desc)
+        lines.append("")
+        lines.append("**Voix :** " + vo)
+        lines.append("")
+        lines.append("**Prompt image :** `" + prompt + "`")
         lines.append("")
 
     return "\n".join(lines)
 
 
-def print_plan_summary(plan: dict, pack_dir: Path) -> None:
-    print(f"\n{'='*60}")
-    print(f"PLAN GÉNÉRÉ : {plan.get('title')}")
-    print(f"{'='*60}")
-    print(f"Sujet     : {plan.get('topic')}")
-    print(f"Durée     : {plan.get('duration_seconds')}s")
-    print(f"Scènes    : {len(plan.get('scenes', []))}")
-    print(f"\nDossier   : {pack_dir}")
-    print(f"\nScènes :")
+def print_plan_summary(plan, pack_dir):
+    print("\n" + "=" * 60)
+    print("PLAN GÉNÉRÉ : " + plan.get("title", ""))
+    print("=" * 60)
+    print("Sujet     : " + plan.get("topic", ""))
+    print("Durée     : " + str(plan.get("duration_seconds", "?")) + "s")
+    print("Scènes    : " + str(len(plan.get("scenes", []))))
+    print("\nDossier   : " + str(pack_dir))
+    print("\nScènes :")
 
     for s in plan.get("scenes", []):
-        print(f"  [{s['scene_number']:02d}] {s['type']:12s} {s['duration_seconds']}s — {s['description'][:60]}...")
+        role = s.get("role", "").upper()
+        print("  [" + str(s["scene_number"]).zfill(2) + "] " + s["type"].ljust(12) + " " + str(s["duration_seconds"]) + "s · " + role)
 
     print()
 
@@ -166,5 +210,5 @@ if __name__ == "__main__":
     plan = generate_plan(topic)
     pack_dir = save_pack(topic, plan)
     print_plan_summary(plan, pack_dir)
-    print(f"Plan sauvegardé dans : {pack_dir}/plan.md")
-    print(f"Scènes JSON dans     : {pack_dir}/scenes.json")
+    print("Plan sauvegardé dans : " + str(pack_dir) + "/plan.md")
+    print("Scènes JSON dans     : " + str(pack_dir) + "/scenes.json")
