@@ -13,7 +13,20 @@ API_KEY = os.getenv("ALEXYA_API_KEY")
 BASE_URL = "https://alexya.ai/api/v1"
 OUTPUT_DIR = Path("outputs")
 ALY_REFS_DIR = Path("references/aly")
-ALY_IMAGE = ALY_REFS_DIR / "mok-up Aly.png"
+SCENES_REF_DIR = Path("references/scenes")
+
+# Preferred master reference; falls back to first image found in ALY_REFS_DIR.
+ALY_MASTER = ALY_REFS_DIR / "aly_master.png"
+IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".webp"}
+
+SCENE_REF_SUFFIX = (
+    "Recreate the scene reference image while preserving exactly the same environment, "
+    "camera angle, framing, lighting, outfit style, pose, perspective, depth of field and atmosphere. "
+    "Replace only the person with Aly from the Aly character reference. "
+    "Aly must be perfectly integrated into the scene with realistic shadows, matching light direction, "
+    "matching color temperature, realistic skin texture and the same natural photo quality. "
+    "Clean final photo export only. No camera app interface, no iPhone UI, no screenshot elements."
+)
 
 POLL_INTERVAL = 5
 POLL_TIMEOUT = 600
@@ -65,27 +78,60 @@ def upload_reference(image_path: Path) -> str:
     return public_url
 
 
+def resolve_aly_reference() -> Path | None:
+    """Return the Aly identity reference image, or None if not found."""
+    if ALY_MASTER.exists():
+        return ALY_MASTER
+    candidates = sorted(
+        p for p in ALY_REFS_DIR.iterdir()
+        if p.suffix.lower() in IMAGE_EXTENSIONS
+    )
+    return candidates[0] if candidates else None
+
+
 def is_aly_prompt(prompt: str) -> bool:
     keywords = ["aly", "alycia", "alicia"]
     return any(k in prompt.lower() for k in keywords)
 
 
-def create_image_job(prompt: str, aspect_ratio: str = "9:16") -> dict:
+def create_image_job(prompt: str, aspect_ratio: str = "9:16", scene_reference: Path | None = None) -> dict:
     if not API_KEY:
         raise ValueError("ALEXYA_API_KEY manquante dans .env")
+
+    image_urls = []
+
+    if scene_reference is not None:
+        # Scene-reference mode: upload scene photo + Aly identity reference.
+        if not scene_reference.exists():
+            raise FileNotFoundError(f"Scene reference introuvable : {scene_reference}")
+        print(f"Mode scène-référence : {scene_reference.name}")
+        image_urls.append(upload_reference(scene_reference))
+
+        aly_ref = resolve_aly_reference()
+        if aly_ref:
+            image_urls.append(upload_reference(aly_ref))
+        else:
+            print(f"Avertissement : aucune référence Aly trouvée dans {ALY_REFS_DIR}")
+
+        # Append the scene-recreation instruction to the prompt.
+        if SCENE_REF_SUFFIX not in prompt:
+            prompt = prompt.rstrip(". ") + ". " + SCENE_REF_SUFFIX
+
+    elif is_aly_prompt(prompt):
+        # Standard Aly prompt: inject identity reference only.
+        aly_ref = resolve_aly_reference()
+        if aly_ref:
+            image_urls.append(upload_reference(aly_ref))
+        else:
+            print(f"Avertissement : aucune référence Aly trouvée dans {ALY_REFS_DIR}")
 
     payload = {
         "prompt": prompt,
         "mode": "high_quality",
         "aspect_ratio": aspect_ratio,
     }
-
-    if is_aly_prompt(prompt):
-        if ALY_IMAGE.exists():
-            public_url = upload_reference(ALY_IMAGE)
-            payload["image_urls"] = [public_url]
-        else:
-            print(f"Avertissement : {ALY_IMAGE} introuvable, génération sans référence.")
+    if image_urls:
+        payload["image_urls"] = image_urls
 
     print(f"Création du job : {prompt!r} (aspect_ratio={aspect_ratio})")
     resp = requests.post(f"{BASE_URL}/image/generate", headers=api_headers(), json=payload)
@@ -137,8 +183,8 @@ def download_image(output_url: str, prompt: str) -> Path:
     return output_path
 
 
-def generate(prompt: str, aspect_ratio: str = "9:16") -> None:
-    job = create_image_job(prompt, aspect_ratio)
+def generate(prompt: str, aspect_ratio: str = "9:16", scene_reference: Path | None = None) -> None:
+    job = create_image_job(prompt, aspect_ratio, scene_reference=scene_reference)
 
     poll_url = job.get("poll_url")
     if not poll_url:
@@ -149,12 +195,41 @@ def generate(prompt: str, aspect_ratio: str = "9:16") -> None:
     print(f"\nImage sauvegardée : {output_path}")
 
 
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage : python generate_image.py \"votre prompt\" [aspect_ratio]")
-        print("Aspect ratios : 1:1  16:9  9:16  4:3  3:4  5:4  4:5")
-        sys.exit(1)
+def _print_usage():
+    print("Usage :")
+    print("  python3 generate_image.py \"votre prompt\" [aspect_ratio]")
+    print("  python3 generate_image.py --scene-reference <image> \"votre prompt\" [aspect_ratio]")
+    print()
+    print("Aspect ratios : 1:1  16:9  9:16  4:3  3:4  5:4  4:5  (défaut : 9:16)")
+    print()
+    print("Exemples :")
+    print("  python3 generate_image.py \"Aly sourit face caméra dans sa chambre\" 9:16")
+    print("  python3 generate_image.py --scene-reference references/scenes/my_scene.jpg \"Recreate this photo with Aly\"")
+    print()
+    print("Mode --scene-reference :")
+    print("  Upload automatiquement la photo de scène + la référence Aly.")
+    print("  Préserve : décor, angle, cadrage, lumière, tenue, pose, profondeur de champ.")
+    print("  Remplace uniquement la personne par Aly.")
 
-    prompt = sys.argv[1]
-    aspect_ratio = sys.argv[2] if len(sys.argv) > 2 else "9:16"
-    generate(prompt, aspect_ratio)
+
+if __name__ == "__main__":
+    args = sys.argv[1:]
+
+    if not args or args[0] in ("-h", "--help"):
+        _print_usage()
+        sys.exit(0 if args else 1)
+
+    scene_ref = None
+    if args[0] == "--scene-reference":
+        if len(args) < 3:
+            print("Erreur : --scene-reference attend un chemin d'image puis un prompt.")
+            print()
+            _print_usage()
+            sys.exit(1)
+        scene_ref = Path(args[1])
+        SCENES_REF_DIR.mkdir(parents=True, exist_ok=True)
+        args = args[2:]
+
+    prompt = args[0]
+    aspect_ratio = args[1] if len(args) > 1 else "9:16"
+    generate(prompt, aspect_ratio, scene_reference=scene_ref)
