@@ -213,24 +213,46 @@ def _print_usage():
     print("  Remplace uniquement la personne par Aly.")
 
 
+VALID_ASPECT_RATIOS = {"1:1", "16:9", "9:16", "4:3", "3:4", "5:4", "4:5"}
+
+
+def _error(msg):
+    print(f"Erreur : {msg}")
+    print()
+    _print_usage()
+    sys.exit(1)
+
+
 if __name__ == "__main__":
     args = sys.argv[1:]
 
     if not args or args[0] in ("-h", "--help"):
         _print_usage()
-        sys.exit(0 if args else 1)
+        sys.exit(0)
 
     scene_ref = None
     if args[0] == "--scene-reference":
         if len(args) < 3:
-            print("Erreur : --scene-reference attend un chemin d'image puis un prompt.")
-            print()
-            _print_usage()
-            sys.exit(1)
+            _error("--scene-reference attend un chemin d'image puis un prompt.")
         scene_ref = Path(args[1])
-        SCENES_REF_DIR.mkdir(parents=True, exist_ok=True)
+        if not scene_ref.exists():
+            _error(f"Fichier scène-référence introuvable : {scene_ref}")
+        if scene_ref.suffix.lower() not in IMAGE_EXTENSIONS:
+            _error(f"Format non supporté : {scene_ref.suffix}. Formats acceptés : {', '.join(sorted(IMAGE_EXTENSIONS))}")
         args = args[2:]
 
-    prompt = args[0]
+    if not args:
+        _error("Un prompt est requis.")
+
+    if args[0].startswith("--"):
+        _error(f"Option inconnue : {args[0]}")
+
+    prompt = args[0].strip()
+    if not prompt:
+        _error("Le prompt ne peut pas être vide.")
+
     aspect_ratio = args[1] if len(args) > 1 else "9:16"
+    if aspect_ratio not in VALID_ASPECT_RATIOS:
+        _error(f"Aspect ratio invalide : {aspect_ratio!r}. Valeurs acceptées : {', '.join(sorted(VALID_ASPECT_RATIOS))}")
+
     generate(prompt, aspect_ratio, scene_reference=scene_ref)
